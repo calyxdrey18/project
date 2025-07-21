@@ -22,6 +22,21 @@
             padding: 0;
             box-sizing: border-box;
         }
+     .watermark {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      z-index: 1000;
+      pointer-events: none;
+      letter-spacing: 0.5px;
+      opacity: 0.3;
+      text-shadow: 0 0 6px var(--accent);
+      user-select: none;
+      text-transform: none;
+    }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -114,9 +129,9 @@
         <h1>Coming Soon</h1>
         <p>Our new tool is under construction. We are working hard to bring you an amazing experience!</p>
     </main>
-    
+    <div class="watermark">Calyx &lt;/&gt; Studio</div>
     <footer>
-        <p>© 2024 Calyx Drey</p>
+        
     </footer>
 
     <!-- JavaScript for Particle Background -->

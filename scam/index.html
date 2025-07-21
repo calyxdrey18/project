@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Coming Soon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- General & Theme --- */
+        :root {
+            --dark-bg: #0a0f18;
+            --light-text: #e0e0e0;
+            --muted-text: #a0a0a0;
+            --accent-color: #00e1ff;
+            --particle-color: rgba(255, 255, 255, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+     .watermark {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      z-index: 1000;
+      pointer-events: none;
+      letter-spacing: 0.5px;
+      opacity: 0.3;
+      text-shadow: 0 0 6px var(--accent);
+      user-select: none;
+      text-transform: none;
+    }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            overflow: hidden; /* Prevents scrollbars from the canvas */
+        }
+        
+        /* --- Particle Background Canvas --- */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind the content */
+        }
+
+        /* --- Main Content Container --- */
+        .coming-soon-container {
+            position: relative;
+            z-index: 1; /* In front of the canvas */
+            padding: 2rem;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Loading Spinner --- */
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #333; /* Darker circle part */
+            border-top: 5px solid var(--accent-color); /* The colored spinning part */
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            animation: spin 1.2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- Text Styling --- */
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(0, 225, 255, 0.4);
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: var(--muted-text);
+            font-weight: 300;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* --- Footer Credit --- */
+        footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            color: var(--muted-text);
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- The particle background will be rendered here -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- The main content shown to the user -->
+    <main class="coming-soon-container">
+        <div class="loader"></div>
+        <h1>Coming Soon</h1>
+        <p>Our new tool is under construction. We are working hard to bring you an amazing experience!</p>
+    </main>
+    <div class="watermark">Calyx &lt;/&gt; Studio</div>
+    <footer>
+        
+    </footer>
+
+    <!-- JavaScript for Particle Background -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particlesArray;
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.directionX = directionX;
+                    this.directionY = directionY;
+                    this.size = size;
+                    this.color = color;
+                }
+                
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim();
+                    ctx.fill();
+                }
+                
+                update() {
+                    if (this.x > canvas.width || this.x < 0) {
+                        this.directionX = -this.directionX;
+                    }
+                    if (this.y > canvas.height || this.y < 0) {
+                        this.directionY = -this.directionY;
+                    }
+                    this.x += this.directionX;
+                    this.y += this.directionY;
+                    this.draw();
+                }
+            }
+
+            function init() {
+                particlesArray = [];
+                // More particles for a denser, more "simple" feel without links
+                let numberOfParticles = (canvas.height * canvas.width) / 12000; 
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * 0.4) - 0.2; // Slower movement
+                    let directionY = (Math.random() * 0.4) - 0.2;
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size));
+                }
+            }
+            
+            // This version does NOT connect particles with lines for a simpler look
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+            }
+
+            window.addEventListener('resize', () => {
+                canvas.width = innerWidth;
+                canvas.height = innerHeight;
+                init();
+            });
+
+            init();
+            animate();
+        });
+    </script>
+</body>
+</html>

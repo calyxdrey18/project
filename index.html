@@ -1,702 +1,964 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calyx's Project Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <style>
-        /* --- General & Theme --- */
-        :root {
-            --primary-glow: rgba(0, 225, 255, 0.5);
-            --secondary-glow: rgba(229, 62, 218, 0.6);
-            --card-bg: rgba(10, 15, 24, 0.75); /* Darker card background */
-            --card-border: rgba(255, 255, 255, 0.15);
-            --text-color: #e2e8f0;
-            --text-muted: #aab; /* Softer muted text */
-            --accent-color: #2dd4bf; /* Teal/Cyan */
-            --dark-bg: #000000; /* Pure black background */
-            --primary: #2dd4bf;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4); /* Slightly deeper shadow */
-            --transition: all 0.3s ease-in-out;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calyx &lt;/&gt; Studio</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <style>
+    :root {
+      --primary-glow: rgba(0, 225, 255, 0.9);
+      --secondary-glow: rgba(229, 62, 218, 0.7);
+      --card-bg: rgba(10, 15, 24, 0.8);
+      --card-border: rgba(255, 255, 255, 0.15);
+      --text-color: #e2e8f0;
+      --text-muted: #aab;
+      --accent-color: #2dd4bf;
+      --dark-bg: #000;
+      --primary: #2dd4bf;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --transition: all 0.3s ease-in-out;
+      --particle-color: rgba(255, 255, 255, 0.4);
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--dark-bg); /* Pure black */
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column; /* Stacks elements vertically */
-            min-height: 100vh;
-            text-align: center;
-            overflow-x: hidden; /* Hide horizontal scrollbar */
-        }
-        
-        /* --- Particle Background Canvas --- */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0; /* Behind the content */
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+      overflow-x: hidden;
+    }
 
-        /* --- Main Content Wrapper --- */
-        .content-wrapper {
-            position: relative;
-            z-index: 1;
-            padding: 40px 20px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background-color: var(--dark-bg);
+    }
 
-        /* --- Intro Section --- */
-        .intro-section {
-            position: fixed; /* Stays centered on screen */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--dark-bg); /* Pure black */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000; /* Above everything else initially */
-            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-            opacity: 1;
-        }
-        
-        .intro-section.hidden {
-            opacity: 0;
-            transform: translateY(-50px);
-            pointer-events: none; /* Important for removing from interaction */
-        }
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+      padding: 40px 16px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-        .intro-section h1 {
-            font-family: 'Press Start 2P', cursive; /* Pixelated/retro font for title */
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color), 0 0 30px rgba(0, 225, 255, 0.5);
-            animation: flicker 1.5s infinite alternate, fadeIn 1s ease-out forwards;
-        }
-        
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            40%, 60% { opacity: 0.7; }
-        }
+    .intro-section {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--dark-bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+      opacity: 1;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
 
-        .intro-section p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 500px;
-            font-weight: 300;
-            animation: typing 2s steps(30, end) forwards, fadeInUp 1s ease-out 0.3s forwards;
-            overflow: hidden; /* Ensures the typing effect works */
-            white-space: nowrap; /* Prevents text from wrapping */
-            border-right: 2px solid var(--accent-color); /* Cursor effect */
-            letter-spacing: 0.5px;
-        }
-        
-        .intro-section p.typed { border-right: none; } /* Remove cursor after typing */
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .intro-section.hidden {
+      opacity: 0;
+      transform: translateY(-30px);
+      pointer-events: none;
+    }
 
-        /* --- Loading Spinner --- */
-        .loader {
-            width: 60px;
-            height: 60px;
-            border: 6px solid rgba(255, 255, 255, 0.2); /* Base ring */
-            border-top: 6px solid var(--accent-color); /* Spinning part */
-            border-radius: 50%;
-            margin: 0 auto 2rem;
-            animation: spin 1.2s linear infinite;
-            box-shadow: 0 0 15px rgba(45, 212, 191, 0.4); /* Subtle glow */
-        }
+    .intro-section h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+      text-shadow:
+        0 0 12px var(--accent-color),
+        0 0 32px var(--primary-glow),
+        0 0 64px var(--primary-glow);
+      animation: flicker 1.5s infinite alternate, fadeIn 1s ease-out forwards;
+      max-width: 320px;
+      word-wrap: break-word;
+    }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    .intro-section p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      font-weight: 300;
+      animation: typing 2s steps(40, end) forwards, fadeInUp 1s ease-out 0.3s forwards;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--accent-color);
+      letter-spacing: 0.5px;
+    }
 
-        /* --- Main Portfolio Content --- */
-        .portfolio-header {
-            text-align: center;
-            margin-bottom: 40px;
-            opacity: 0; /* Initially hidden */
-            transform: translateY(-20px); /* Start slightly above */
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-        
-        .portfolio-header.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .intro-section p.typed {
+      border-right: none;
+    }
 
-        .portfolio-header h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary-glow), var(--accent-color), white);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 15px;
-        }
+    .loader {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-top: 4px solid var(--accent-color);
+      border-radius: 50%;
+      margin: 2rem auto 0;
+      animation: spin 1.2s linear infinite;
+      box-shadow: 0 0 15px rgba(45, 212, 191, 0.4);
+    }
 
-        .portfolio-header p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 650px;
-            margin: 0 auto 30px;
-            font-weight: 300;
-        }
+    .portfolio-header {
+      text-align: center;
+      margin-bottom: 30px;
+      opacity: 0;
+      transform: translateY(-15px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+      padding: 0 12px;
+    }
 
-        /* --- Search Bar --- */
-        .search-container {
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-        }
+    .portfolio-header.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        #search-input {
-            width: 100%;
-            padding: 15px 20px;
-            font-size: 1rem;
-            color: var(--text-color);
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            box-sizing: border-box;
-        }
+    .portfolio-header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary-glow), var(--accent-color), white);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 12px;
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-        #search-input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
-        }
+    .portfolio-header p {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 25px;
+      font-weight: 300;
+      line-height: 1.4;
+    }
 
-        #no-results {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            display: none; /* Hidden by default */
-        }
+    .search-container {
+      max-width: 380px;
+      margin: 0 auto 16px;
+      position: relative;
+      width: 100%;
+    }
 
-        /* --- Project Grid Container (now vertical) --- */
-        .project-container {
-            display: flex; /* Use flexbox for vertical layout */
-            flex-direction: column; /* Stack items vertically */
-            gap: 30px;
-            max-width: 800px; /* Max width for cards */
-            margin: 60px auto 0;
-            width: 100%; /* Ensure it takes available width */
-        }
+    #search-input {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 1rem;
+      color: var(--text-color);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
+    }
 
-        /* --- Individual Project Card (Glassmorphism) --- */
-        .project-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
+    #search-input:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 15px rgba(45, 212, 191, 0.4);
+    }
 
-        .project-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary-glow);
-        }
+    .project-container {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      max-width: 700px;
+      margin: 40px auto 0;
+      width: 100%;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
 
-        /* --- Card Content --- */
-        .project-card h3 {
-            font-size: 1.7rem;
-            font-weight: 600;
-            color: white;
-            margin-top: 0;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            justify-content: center; /* Center icon and text */
-        }
-        
-        .project-card h3 svg {
-            width: 28px;
-            height: 28px;
-            flex-shrink: 0;
-            fill: var(--accent-color);
-        }
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
 
-        .project-card .features-list {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 25px 0;
-            flex-grow: 1;
-            text-align: left; /* Align features text to the left */
-        }
+    .project-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--primary-glow);
+    }
 
-        .project-card .features-list li {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
+    .project-card h3 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: white;
+      margin-top: 0;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-content: center;
+    }
 
-        .project-card .features-list li::before {
-            content: '';
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-            margin-right: 12px;
-            background-color: var(--accent-color);
-            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm-1.999 14.413-3.713-3.705L7.7 11.292l2.299 2.295 5.294-5.294 1.414 1.414-6.706 6.706z"/></svg>');
-            mask-size: cover;
-            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm-1.999 14.413-3.713-3.705L7.7 11.292l2.299 2.295 5.294-5.294 1.414 1.414-6.706 6.706z"/></svg>');
-            -webkit-mask-size: cover;
-        }
+    .project-card h3 .fa-icon {
+      font-size: 1.6rem;
+      color: var(--accent-color);
+      display: inline-block;
+      vertical-align: middle;
+    }
 
-        /* --- "Visit Site" Button with Icon --- */
-        .visit-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-align: center;
-            padding: 14px 24px;
-            background-color: var(--accent-color);
-            color: #0f0f1a;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: auto;
-            border: none;
-        }
+    .project-card .features-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px 0;
+      flex-grow: 1;
+      text-align: left;
+    }
 
-        .visit-button:hover {
-            background-color: #5eead4;
-            transform: scale(1.03);
-        }
-        
-        .visit-button svg {
-            width: 20px;
-            height: 20px;
-            fill: #0f0f1a;
-        }
-        
-        /* --- Music Player --- */
-        .music-player {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 999;
-        }
-        
-        #play-pause-btn {
-            width: 60px;
-            height: 60px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 50%;
-            cursor: pointer;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s, border-color 0.3s;
-            box-shadow: var(--shadow);
-        }
+    .project-card .features-list li {
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
 
-        #play-pause-btn:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-color: var(--primary-glow);
-        }
+    .project-card .features-list li::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      margin-right: 14px;
+      color: var(--accent-color);
+      background-color: transparent;
+      mask-image: none;
+      -webkit-mask-image: none;
+    }
 
-        #play-pause-btn svg {
-            width: 28px;
-            height: 28px;
-            fill: var(--text-color);
-        }
+    .visit-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 26px;
+      background-color: var(--accent-color);
+      color: #0f0f1a;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      margin-top: auto;
+      border: none;
+      cursor: pointer;
+      user-select: none;
+      font-size: 1rem;
+    }
 
-        #audio-player { display: none; }
+    .visit-button:hover:not(.loading) {
+      background-color: #5eead4;
+      transform: scale(1.05);
+    }
 
-        /* --- Animations --- */
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes flicker { 0%, 100% { opacity: 1; } 40%, 60% { opacity: 0.7; } }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
+    .visit-button i {
+      font-size: 1.15rem;
+      color: #0f0f1a;
+    }
+
+    .loading-text {
+      display: none;
+      margin-left: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #0f0f1a;
+    }
+
+    .loading-spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(15, 15, 26, 0.4);
+      border-top-color: #0f0f1a;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+
+    .visit-button.loading {
+      pointer-events: none;
+      opacity: 0.8;
+      cursor: default;
+    }
+
+    .visit-button.loading > .btn-text {
+      display: none;
+    }
+
+    .visit-button.loading > .loading-text {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .music-player {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 999;
+    }
+
+    #play-pause-btn {
+      width: 56px;
+      height: 56px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 50%;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.3s, border-color 0.3s;
+      box-shadow: 0 0 16px 3px var(--primary-glow);
+    }
+
+    #play-pause-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--primary-glow);
+    }
+
+    #play-pause-btn i {
+      font-size: 1.45rem;
+      color: var(--text-color);
+    }
+
+    .watermark {
+      position: fixed;
+      bottom: 20px;
+      left: 24px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      opacity: 0.45;
+      pointer-events: none;
+      letter-spacing: 0.8px;
+      user-select: none;
+      text-transform: none;
+      animation: watermark-glow 2.5s infinite alternate;
+      text-shadow:
+        0 0 6px var(--accent-color),
+        0 0 14px var(--primary-glow),
+        0 0 40px var(--secondary-glow);
+      z-index: 1000;
+    }
+
+    .suggestion-icon {
+      position: fixed;
+      bottom: 95px;
+      left: 24px;
+      width: 60px;
+      height: 60px;
+      background-color: var(--accent-color);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow:
+        0 0 20px 4px var(--primary-glow),
+        0 0 12px 8px var(--secondary-glow);
+      transition: transform 0.25s ease, background-color 0.25s ease;
+      animation: floating-glow 2s ease-in-out infinite alternate;
+      z-index: 1001;
+    }
+
+    .suggestion-icon:hover {
+      background-color: #5eead4;
+      transform: scale(1.15);
+      box-shadow:
+        0 0 48px 10px var(--accent-color),
+        0 0 32px 18px var(--primary-glow);
+    }
+
+    .suggestion-icon i {
+      font-size: 2.1rem;
+      color: #0f0f1a;
+      pointer-events: none;
+    }
+
+    @keyframes flicker {
+      0%, 100% {
+        opacity: 1;
+      }
+      40%, 60% {
+        opacity: 0.7;
+      }
+    }
+
+    @keyframes typing {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes watermark-glow {
+      0% {
+        text-shadow: 0 0 14px var(--accent-color), 0 0 5px var(--accent-color), 0 0 1px var(--primary-glow);
+        opacity: 0.35;
+      }
+      50% {
+        text-shadow: 0 0 40px var(--primary-glow), 0 0 16px var(--secondary-glow), 0 0 8px var(--accent-color);
+        opacity: 0.9;
+      }
+      100% {
+        text-shadow: 0 0 14px var(--secondary-glow), 0 0 20px var(--primary-glow), 0 0 4px var(--accent-color);
+        opacity: 0.5;
+      }
+    }
+
+    @keyframes floating-glow {
+      0%, 100% {
+        box-shadow:
+          0 0 16px 2px var(--primary-glow),
+          0 0 32px 8px var(--secondary-glow);
+        opacity: 0.86;
+        transform: translateY(0);
+      }
+      60% {
+        box-shadow:
+          0 0 22px 8px var(--accent-color),
+          0 0 44px 17px var(--primary-glow);
+        opacity: 1;
+        transform: translateY(-6px) scale(1.07);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .content-wrapper {
+        max-width: 95vw;
+        padding: 24px 10px;
+      }
+      .portfolio-header h1 { font-size: 2.4rem; }
+    }
+
+    @media (max-width: 600px) {
+      html { font-size: 15px; }
+      .portfolio-header h1 { font-size: 1.8rem; }
+      .suggestion-icon, #play-pause-btn { width: 48px; height: 48px; }
+      .watermark { font-size: 1.1rem; left: 15px; bottom: 15px; }
+      #search-input { font-size: 0.95rem; padding: 12px 16px; }
+    }
+
+    @media (max-width: 420px) {
+      html { font-size: 14px; }
+      .portfolio-header p { font-size: 1rem; }
+      .watermark { font-size: 0.9rem; }
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    }
+
+    .loading-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .loading-overlay .loading-spinner {
+      width: 80px;
+      height: 80px;
+      border: 8px solid rgba(255, 255, 255, 0.2);
+      border-top: 8px solid var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1.2s linear infinite;
+      box-shadow: 0 0 20px rgba(45, 212, 191, 0.6);
+    }
+
+    .loading-overlay .loading-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 20px;
+      color: var(--accent-color);
+    }
+  </style>
 </head>
 <body>
-    
-    <canvas id="particle-canvas"></canvas>
+  <canvas id="particle-canvas"></canvas>
 
-    <div class="content-wrapper">
-
-        <div class="intro-section" id="intro">
-            <h1>Calyx Drey </h1>
-            <p id="intro-subtitle">Get ready for something amazing. Our new tools are launching soon!</p>
-            <div class="loader"></div>
-        </div>
-
-        <header class="portfolio-header" id="portfolio-header" style="display: none;">
-            <h1>Calyx Drey</h1>
-            <p>A curated collection of my web applications and tools, each crafted with a focus on functionality and modern design.</p>
-            <div class="search-container">
-                <input type="search" id="search-input" placeholder="Search projects by name...">
-            </div>
-        </header>
-
-        <main class="project-container" id="project-container" style="display: none;"></main>
-        
-        <div id="no-results" style="display: none;">
-            <h2>Oops!</h2>
-            <p>No projects found matching your search.</p>
-        </div>
-
+  <div class="content-wrapper">
+    <div class="intro-section" id="intro">
+      <h1>Calyx &lt;/&gt; Studio</h1>
+      <p id="intro-subtitle">
+        Get ready for something amazing. Our new tools are launching soon!
+      </p>
+      <div class="loader"></div>
     </div>
 
-    <footer class="site-footer-credit">
-        <p>&copy copyright 2025 | Powered By Calyx Drey</p>
-    </footer>
-    
-    <!-- Music Player -->
-    <div class="music-player">
-        <!-- 
-            IMPORTANT: Place your music file (e.g., 'background-music.mp3') in a 'music' folder 
-            next to this HTML file, or change the src path below.
-        -->
-        <audio id="audio-player" loop src="music/song.mp3"></audio>
-        <button id="play-pause-btn" title="Play/Pause Music">
-            <!-- Play Icon -->
-            <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 6v12l10-6z"></path></svg>
-            <!-- Pause Icon (hidden by default) -->
-            <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display:none;"><path d="M6 18h4V6H6v12zm8-12v12h4V6h-4z"></path></svg>
-        </button>
+    <header class="portfolio-header" id="portfolio-header" style="display: none;">
+      <h1>Calyx &lt;/&gt; Studio</h1>
+      <p>
+        A curated collection of my web applications and tools, each crafted
+        with a focus on functionality and modern design.
+      </p>
+      <div class="search-container">
+        <input
+          type="search"
+          id="search-input"
+          placeholder="Search projects by name..."
+          autocomplete="off"
+        />
+      </div>
+    </header>
+
+    <main
+      class="project-container"
+      id="project-container"
+      style="display: none"
+    ></main>
+
+    <div id="no-results" style="display: none; margin-top: 30px; color: var(--text-muted);">
+      <h2>Oops!</h2>
+      <p>No projects found matching your search.</p>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.3.0/tsparticles.bundle.min.js"></script>
+  <div class="watermark">Calyx &lt;/&gt; Studio</div>
 
-    <script>
-        // --- DATA for all projects (with specific icons) ---
-        const projects = [
-            {
-                title: 'Code Encrypter',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zm0 2c1.654 0 3 1.346 3 3v3h-6V7c0-1.654 1.346-3 3-3zm-1 9h2v3h-2v-3z"></path></svg>`,
-                features: ['Multiple encryption algorithms for robust security.', 'Secure client-side processing, no data sent to servers.', 'One-click copy to clipboard functionality.', 'Clean and intuitive user interface.'],
-                link: 'encrypt/index.html'
-            },
-            {
-                title: 'Font Generator',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8.648 10.999h6.704L12 4.351l-3.352 6.648zm1.932 2L6 22h2.23l.924-2.31h5.692l.924 2.31H20L13.42 12.999h-2.84zM13.23 18.12H8.77L11 12.9l2.23 5.22z"></path></svg>`,
-                features: ['Generates stylish text from a vast font library.', 'Real-time preview of generated fonts.', 'Easy copy-paste for social media and documents.', 'Fully responsive design for mobile use.'],
-                link: 'font/index.html'
-            },
-            {
-                title: 'Js Obfuscator',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M14.293 8.293 11 11.586 7.707 8.293 6.293 9.707 9.586 13l-3.293 3.293 1.414 1.414L11 14.414l3.293 3.293 1.414-1.414L12.414 13l3.293-3.293z"></path></svg>`,
-                features: ['Protects JavaScript code from theft and reverse-engineering.', 'Renames variables and functions to be unreadable.', 'Adjustable obfuscation strength levels.', 'String extraction and dead code injection options.'],
-                link: 'obfuscate/index.html'
-            },
-            {
-                title: 'Web Code Extractor',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="m13 14.267-3 2.91V8.823l3 2.91v2.534zm-4 3.32L5 15l4-3.882v7.764zm6-.001-3-2.91v-2.533l3-2.91v5.843zm4-3.32L15 15l4 3.882V11.118zM12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2z"></path></svg>`,
-                features: ['Extracts HTML, CSS, and JavaScript from any URL.', 'Downloads all extracted assets in a structured ZIP file.', 'Code formatting and beautifying options.', 'Useful for learning and analyzing existing websites.'],
-                link: 'webscrap/index.html'
-            },
-            {
-                title: 'Calyx LinkHub',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99 0-3.903-.52-5.586-1.459L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.296-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path></svg>`,
-                features: ['Central hub to promote WhatsApp groups and channels.', 'Create hype with custom invitation links and messages.', 'Track clicks and member joins with built-in analytics.', 'Schedule posts to automatically promote in other groups.'],
-                link: 'link/index.html'
-            },
-            {
-                title: 'Wallpaper Gallery',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM5 19V5h14l.002 14H5z"></path><path d="m10 14-1-1-3 4h12l-5-7z"></path></svg>`,
-                features: ['Curated collection of high-resolution wallpapers.', 'Search and filter by category, color, and orientation.', 'One-click download for desktop and mobile devices.', 'Infinite scroll for seamless browsing experience.'],
-                link: '#'
-            },
-            {
-                title: 'Image Generator',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="m16.6 9.4-2.2-2.2-5.8 5.8 2.2 2.2 5.8-5.8zM21 16c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4c.9 0 1.8.3 2.5.9l.4-1.1c-1-1-2.3-1.6-3.8-1.6-3.2 0-5.8 2.6-5.8 5.8s2.6 5.8 5.8 5.8 5.8-2.6 5.8-5.8c0-.7-.1-1.3-.3-1.9l-1 .3c.2.5.3 1.1.3 1.6zm-5.2-1.2-1-1-2.6 2.6.5.5c.3.3.6.4.9.4s.6-.1.9-.4l1.3-1.3zM21.2 2.8l2.4-2.4-2.2-2.2 2.4-2.4 2.2 2.2zM2.8 19.8l2.4-2.4-2.2-2.2-2.4 2.4 2.2 2.2zM4 2H2v2l2.6 2.6 2.2-2.2L4 2zm18 20h-2v-2l-2.6-2.6 2.2-2.2L20 22z"></path></svg>`,
-                features: ['AI-powered text-to-image generation.', 'Multiple art styles (photorealistic, anime, abstract).', 'Options for aspect ratio and image quality control.', 'User gallery to showcase and share creations.'],
-                link: 'imggen/index.html'
-            },
-            {
-                title: 'Calyx AI',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-9.88 9.52L2 12.83V16a1 1 0 0 0 1 1h1.17l1.29.9a10 10 0 1 0-5.34-4.55L2.1 12H2a10 10 0 1 0 10-10zm-2 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm5 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path></svg>`,
-                features: ['Advanced conversational AI chatbot.', 'Natural Language Processing for human-like interaction.', 'Integrates with external APIs for real-time data.', 'Customizable personality and knowledge base.'],
-                link: 'calyxai/index.html'
-            },
-            {
-                title: 'Save for Save',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zm0 6c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2z"></path><path d="M12 2C6.486 2 2 6.486 2 12c0 2.02.613 3.887 1.666 5.435A9.952 9.952 0 0 0 12 22a9.952 9.952 0 0 0 8.334-4.565C21.387 15.887 22 14.02 22 12c0-5.514-4.486-10-10-10zm6.334 15.435C17.043 19.014 14.65 20 12 20s-5.043-.986-6.334-2.565A7.954 7.954 0 0 1 12 14a7.954 7.954 0 0 1 6.334 3.435z"></path></svg>`,
-                features: ['Social media engagement growth platform.', 'Users earn points by engaging with others\' content.', 'Fair and automated exchange system.', 'Supports multiple major social media networks.'],
-                link: 'sfs/index.html'
-            },
-            {
-                title: 'Scammer',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M13.293 9.707 10.5 12.5l-1.793-1.793-1.414 1.414L9.086 15l2.793-2.793-1.06-1.06 1.06-1.06 1.414 1.414zM16 10h-2v2h2v-2z"></path></svg>`,
-                features: ['Simulates various funny prank interfaces.', 'Safe and harmless entertainment tool for friends.', 'Customizable scenarios for creative pranks.', 'Educational component to raise awareness.'],
-                link: 'scam/index.html'
-            },
-            {
-                title: 'Live Chat',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h3v3.767L13.277 18H20c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zm-5 9h-2v2h-2v-2H9V9h2V7h2v2h2v2z"></path></svg>`,
-                features: ['Embeddable real-time chat widget for any website.', 'Operator dashboard with visitor tracking.', 'Canned responses for quick and efficient replies.', 'Easy two-minute copy-paste installation.'],
-                link: 'popxxx/index.html'
-            },
-            {
-                title: 'YouTube Boost',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.593 7.203a2.506 2.506 0 0 0-1.762-1.766C18.265 5.007 12 5 12 5s-6.264-.007-7.831.437a2.506 2.506 0 0 0-1.762 1.766C2 8.74 2 12 2 12s.007 3.26 1.407 4.797a2.506 2.506 0 0 0 1.762 1.766C6.735 18.993 12 19 12 19s6.265.007 7.831-.437a2.506 2.506 0 0 0 1.762-1.766C22 15.26 22 12 22 12s-.007-3.26-1.407-4.797zM9.546 15.58V8.42L15.818 12l-6.272 3.58z"></path></svg>`,
-                features: ['Increase YouTube video views.', 'Has immediate effect in terms of service.', 'Boost YouTube Watch hours.', 'Tracks video ranking and performance metrics.'],
-                link: 'youboost/index.html'
-            },
-            {
-                title: 'Virtual Numbers',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM9 13a1 1 0 0 1-2 0V9a1 1 0 0 1 2 0v4zm2 2a1 1 0 0 1-2 0v-2a1 1 0 0 1 2 0v2zm2-2a1 1 0 0 1-2 0V9a1 1 0 0 1 2 0v4zm2 2a1 1 0 0 1-2 0v-2a1 1 0 0 1 2 0v2z"></path></svg>`,
-                features: ['Provides temporary phone numbers for online verification.', 'Receive SMS online to protect your privacy.', 'Numbers available from multiple countries globally.', 'Simple, pay-per-use or subscription model.'],
-                link: 'virtsim/index.html'
-            },
-            {
-                title: 'PopFlix',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.999 4h-16c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zM8 6h2v2H8V6zm0 4h2v2H8v-2zm0 4h2v2H8v-2zM6 18H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V8h2v2zm0-4H4V6h2v2zm12 12h-8v-2h8v2zm0-4h-8v-2h8v2zm0-4h-8V8h8v2zm0-4h-8V6h8v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V8h2v2zm0-4h-2V6h2v2z"></path></svg>`,
-                features: ['Movie and TV show discovery platform.', 'User ratings, reviews, and personalized recommendations.', 'Create and share custom watchlists with friends.', 'Tracks where to stream content across services.'],
-                link: 'popflix/index.html'
-            }
-        ];
+  <div class="music-player">
+    <audio id="audio-player" loop src="music/song.mp3"></audio>
+    <button id="play-pause-btn" title="Play/Pause Music" aria-label="Toggle play/pause music">
+      <i id="play-icon" class="fas fa-play"></i>
+      <i id="pause-icon" class="fas fa-pause" style="display: none;"></i>
+    </button>
+  </div>
 
-        // --- All JavaScript Logic ---
-        window.addEventListener('DOMContentLoaded', () => {
+  <div class="suggestion-icon" id="suggestion-link" title="Suggest a tool" role="button" tabindex="0" aria-label="Suggest a tool">
+    <i class="fas fa-lightbulb"></i>
+  </div>
 
-            // --- Intro Animation ---
-            const introSection = document.getElementById('intro');
-            const portfolioHeader = document.getElementById('portfolio-header');
-            const projectContainer = document.getElementById('project-container');
-            const introSubtitle = document.getElementById('intro-subtitle');
-            const searchInput = document.getElementById('search-input');
-            const noResults = document.getElementById('no-results');
-            
-            // Typewriter effect for subtitle
-            function typeWriter(text, element) {
-                element.innerHTML = ''; // Clear current content
-                let charIndex = 0;
-                const interval = setInterval(() => {
-                    if (charIndex < text.length) {
-                        element.innerHTML += text.charAt(charIndex);
-                        charIndex++;
-                    } else {
-                        clearInterval(interval);
-                        element.classList.add('typed'); // Add class to remove cursor
-                    }
-                }, 50); // Speed of typing (milliseconds per character)
-            }
-            
-            if (introSubtitle) {
-                typeWriter("Get ready for something amazing. Our new tools are launching soon!", introSubtitle);
-            }
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading...</div>
+  </div>
 
-            // Sequence intro elements to appear with delay
-            setTimeout(() => {
-                introSection.classList.add('hidden');
-            }, 3500); // Keep intro visible for 3.5 seconds
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.3.0/tsparticles.bundle.min.js"></script>
+  <script>
+    const projects = [
+      {
+        title: "Code Encrypter",
+        icon: '<i class="fas fa-lock fa-icon"></i>',
+        features: [
+          "Multiple encryption algorithms for robust security.",
+          "Secure client-side processing, no data sent to servers.",
+          "One-click copy to clipboard functionality.",
+          "Clean and intuitive user interface.",
+        ],
+        link: "encrypt/index.html",
+      },
+      {
+        title: "Font Generator",
+        icon: '<i class="fas fa-font fa-icon"></i>',
+        features: [
+          "Generates stylish text from a vast font library.",
+          "Real-time preview of generated fonts.",
+          "Easy copy-paste for social media and documents.",
+          "Fully responsive design for mobile use.",
+        ],
+        link: "font/index.html",
+      },
+      {
+        title: "Js Obfuscator",
+        icon: '<i class="fas fa-code-branch fa-icon"></i>',
+        features: [
+          "Protects JavaScript code from theft and reverse-engineering.",
+          "Renames variables and functions to be unreadable.",
+          "Adjustable obfuscation strength levels.",
+          "String extraction and dead code injection options.",
+        ],
+        link: "obfuscate/index.html",
+      },
+      {
+        title: "Web Code Extractor",
+        icon: '<i class="fas fa-file-code fa-icon"></i>',
+        features: [
+          "Extracts HTML, CSS, and JavaScript from any URL.",
+          "Downloads all extracted assets in a structured ZIP file.",
+          "Code formatting and beautifying options.",
+          "Useful for learning and analyzing existing websites.",
+        ],
+        link: "webscrap/index.html",
+      },
+      {
+        title: "Calyx LinkHub",
+        icon: '<i class="fas fa-link fa-icon"></i>',
+        features: [
+          "Central hub to promote WhatsApp groups and channels.",
+          "Create hype with custom invitation links and messages.",
+          "Track clicks and member joins with built-in analytics.",
+          "Schedule posts to automatically promote in other groups.",
+        ],
+        link: "link/index.html",
+      },
+      {
+        title: "Wallpaper Gallery",
+        icon: '<i class="fas fa-images fa-icon"></i>',
+        features: [
+          "Curated collection of high-resolution wallpapers.",
+          "Search and filter by category, color, and orientation.",
+          "One-click download for desktop and mobile devices.",
+          "Infinite scroll for seamless browsing experience.",
+        ],
+        link: "#",
+      },
+      {
+        title: "Image Generator",
+        icon: '<i class="fas fa-image fa-icon"></i>',
+        features: [
+          "AI-powered text-to-image generation.",
+          "Multiple art styles (photorealistic, anime, abstract).",
+          "Options for aspect ratio and image quality control.",
+          "User gallery to showcase and share creations.",
+        ],
+        link: "imggen/index.html",
+      },
+      {
+        title: "Calyx AI",
+        icon: '<i class="fas fa-robot fa-icon"></i>',
+        features: [
+          "Advanced conversational AI chatbot.",
+          "Natural Language Processing for human-like interaction.",
+          "Integrates with external APIs for real-time data.",
+          "Customizable personality and knowledge base.",
+        ],
+        link: "calyxai/index.html",
+      },
+      {
+        title: "Save for Save",
+        icon: '<i class="fas fa-users fa-icon"></i>',
+        features: [
+          "Social media engagement growth platform.",
+          "Users earn points by engaging with others' content.",
+          "Fair and automated exchange system.",
+          "Supports multiple major social media networks.",
+        ],
+        link: "sfs/index.html",
+      },
+      {
+        title: "Scammer",
+        icon: '<i class="fas fa-exclamation-triangle fa-icon"></i>',
+        features: [
+          "Simulates various funny prank interfaces.",
+          "Safe and harmless entertainment tool for friends.",
+          "Customizable scenarios for creative pranks.",
+          "Educational component to raise awareness.",
+        ],
+        link: "scam/index.html",
+      },
+      {
+        title: "Adult Centre 18+",
+        icon: '<i class="fas fa-ban fa-icon"></i>',
+        features: [
+          "Embeddable real-time chat widget for any website.",
+          "Operator dashboard with visitor tracking.",
+          "Canned responses for quick and efficient replies.",
+          "Easy two-minute copy-paste installation.",
+        ],
+        link: "popxxx/index.html",
+      },
+      {
+        title: "YouTube Boost",
+        icon: '<i class="fab fa-youtube fa-icon"></i>',
+        features: [
+          "Increase YouTube video views.",
+          "Has immediate effect in terms of service.",
+          "Boost YouTube Watch hours.",
+          "Tracks video ranking and performance metrics.",
+        ],
+        link: "youboost/index.html",
+      },
+      {
+        title: "Virtual Numbers",
+        icon: '<i class="fas fa-phone-alt fa-icon"></i>',
+        features: [
+          "Provides temporary phone numbers for online verification.",
+          "Receive SMS online to protect your privacy.",
+          "Numbers available from multiple countries globally.",
+          "Simple, pay-per-use or subscription model.",
+        ],
+        link: "virtsim/index.html",
+      },
+      {
+        title: "PopFlix",
+        icon: '<i class="fas fa-film fa-icon"></i>',
+        features: [
+          "Movie and TV show discovery platform.",
+          "User ratings, reviews, and personalized recommendations.",
+          "Create and share custom watchlists with friends.",
+          "Tracks where to stream content across services.",
+        ],
+        link: "popflix/index.html",
+      },
+    ];
 
-            setTimeout(() => {
-                introSection.style.display = 'none'; // Hide intro section
-                portfolioHeader.style.display = 'block'; // Show portfolio header
-                projectContainer.style.display = 'flex'; // Show project grid
+    const visitIconFA = '<i class="fas fa-arrow-up-right-from-square"></i>';
 
-                // Trigger animations for portfolio content
-                requestAnimationFrame(() => {
-                    portfolioHeader.style.opacity = '1';
-                    portfolioHeader.style.transform = 'translateY(0)';
-                    
-                    Array.from(projectContainer.children).forEach((card, index) => {
-                        card.style.animation = `fadeInDown 1s ease-out ${index * 0.15}s forwards`;
-                    });
-                    projectContainer.style.opacity = '1';
-                    projectContainer.style.transform = 'translateY(0)';
-                });
-            }, 4700); // Match fade-out duration (1200ms) + intro display time (3500ms)
+    document.addEventListener('DOMContentLoaded', () => {
+      const introSection = document.getElementById('intro');
+      const portfolioHeader = document.getElementById('portfolio-header');
+      const projectContainer = document.getElementById('project-container');
+      const noResults = document.getElementById('no-results');
+      const introSubtitle = document.getElementById('intro-subtitle');
+      const searchInput = document.getElementById('search-input');
+      const audioPlayer = document.getElementById('audio-player');
+      const playPauseBtn = document.getElementById('play-pause-btn');
+      const playIcon = document.getElementById('play-icon');
+      const pauseIcon = document.getElementById('pause-icon');
+      const loadingOverlay = document.getElementById('loading-overlay');
+      const suggestionLink = document.getElementById('suggestion-link');
 
-            const visitIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 11H7.207l2.897-2.896L9 7l-5 5 5 5 1.104-1.104L7.207 13H10v-2zm4 0v2h2.793l2.897 2.896L15 17l5-5-5-5-1.104 1.104L16.793 11H14z"></path></svg>`;
+      function typeWriter(text, element) {
+        element.innerHTML = '';
+        let charIndex = 0;
+        const interval = setInterval(() => {
+          if (charIndex < text.length) {
+            element.innerHTML += text.charAt(charIndex);
+            charIndex++;
+          } else {
+            clearInterval(interval);
+            element.classList.add('typed');
+          }
+        }, 50);
+      }
 
-            function displayProjects(projectList) {
-                projectContainer.innerHTML = '';
-                if (projectList.length === 0) {
-                    noResults.style.display = 'block';
-                } else {
-                    noResults.style.display = 'none';
-                    projectList.forEach((project, index) => {
-                        const card = document.createElement('div');
-                        card.className = 'project-card';
-                        
-                        const featuresHTML = project.features.map(f => `<li>${f}</li>`).join('');
+      if (introSubtitle) {
+        typeWriter(introSubtitle.textContent, introSubtitle);
+      }
 
-                        card.innerHTML = `
-                            <h3>${project.icon} ${project.title}</h3>
-                            <ul class="features-list">
-                                ${featuresHTML}
-                            </ul>
-                            <a href="${project.link}" class="visit-button" target="_blank" rel="noopener noreferrer">
-                                Visit Site ${visitIconSVG}
-                            </a>
-                        `;
-                        projectContainer.appendChild(card);
-                    });
-                }
-            }
+      setTimeout(() => {
+        introSection.classList.add('hidden');
+      }, 3500);
 
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                const filteredProjects = projects.filter(p => 
-                    p.title.toLowerCase().includes(searchTerm)
-                );
-                displayProjects(filteredProjects);
-            });
-            
-            // Initial setup of projects, will be displayed after intro
-            displayProjects(projects);
+      setTimeout(() => {
+        introSection.style.display = 'none';
+        portfolioHeader.style.display = 'block';
+        projectContainer.style.display = 'flex';
 
+        portfolioHeader.classList.add('visible');
 
-            // --- Particle Background Functionality ---
-            const canvas = document.getElementById('particle-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        displayProjects(projects);
 
-            let particlesArray;
-
-            class Particle {
-                constructor(x, y, directionX, directionY, size, color) {
-                    this.x = x;
-                    this.y = y;
-                    this.directionX = directionX;
-                    this.directionY = directionY;
-                    this.size = size;
-                    this.color = color;
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim() || 'rgba(255, 255, 255, 0.4)';
-                    ctx.fill();
-                }
-                update() {
-                    if (this.x > canvas.width || this.x < 0) {
-                        this.directionX = -this.directionX;
-                    }
-                    if (this.y > canvas.height || this.y < 0) {
-                        this.directionY = -this.directionY;
-                    }
-                    this.x += this.directionX;
-                    this.y += this.directionY;
-                    this.draw();
-                }
-            }
-
-            function init() {
-                particlesArray = [];
-                let numberOfParticles = (canvas.height * canvas.width) / 12000; 
-                for (let i = 0; i < numberOfParticles; i++) {
-                    let size = (Math.random() * 2) + 1;
-                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                    let directionX = (Math.random() * 0.4) - 0.2; 
-                    let directionY = (Math.random() * 0.4) - 0.2;
-                    particlesArray.push(new Particle(x, y, directionX, directionY, size));
-                }
-            }
-
-            function animate() {
-                requestAnimationFrame(animate);
-                ctx.clearRect(0, 0, innerWidth, innerHeight);
-
-                for (let i = 0; i < particlesArray.length; i++) {
-                    particlesArray[i].update();
-                }
-            }
-
-            window.addEventListener('resize', () => {
-                canvas.width = innerWidth;
-                canvas.height = innerHeight;
-                init();
-            });
-
-            init();
-            animate();
-
-            // --- Music Player Functionality ---
-            const audio = document.getElementById('audio-player');
-            const playPauseBtn = document.getElementById('play-pause-btn');
-            const playIcon = document.getElementById('play-icon');
-            const pauseIcon = document.getElementById('pause-icon');
-
-            if(audio && playPauseBtn && playIcon && pauseIcon) {
-                playPauseBtn.addEventListener('click', () => {
-                    if (audio.paused) {
-                        audio.play().catch(error => {
-                            console.log("Autoplay was prevented. User interaction is required.");
-                        });
-                        playIcon.style.display = 'none';
-                        pauseIcon.style.display = 'block';
-                    } else {
-                        audio.pause();
-                        playIcon.style.display = 'block';
-                        pauseIcon.style.display = 'none';
-                    }
-                });
-
-                audio.addEventListener('ended', () => {
-                    playIcon.style.display = 'block';
-                    pauseIcon.style.display = 'none';
-                });
-            }
+        // Fade-in animation for projects
+        Array.from(projectContainer.children).forEach((card, i) => {
+          card.style.opacity = 0;
+          card.style.transform = "translateY(15px)";
+          setTimeout(() => {
+            card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            card.style.opacity = 1;
+            card.style.transform = "translateY(0)";
+          }, i * 150);
         });
-    </script>
+      }, 4700);
 
-    <!-- ANTI-TAMPERING SCRIPT -->
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function(e) {
-            if (event.keyCode === 123) return false; 
-            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) return false;
-            if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) return false;
-            if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) return false;
-            if (e.ctrlKey && (e.key === 'S' || e.key === 's')) return false;
+      function displayProjects(projectList) {
+        projectContainer.innerHTML = '';
+        if (projectList.length === 0) {
+          noResults.style.display = 'block';
+          projectContainer.style.display = 'none';
+          return;
+        }
+        noResults.style.display = 'none';
+        projectContainer.style.display = 'flex';
+
+        projectList.forEach(project => {
+          const card = document.createElement('div');
+          card.className = 'project-card';
+          const featuresHTML = project.features.map(f => `<li>${f}</li>`).join('');
+          card.innerHTML = `
+            <h3>${project.icon} ${project.title}</h3>
+            <ul class="features-list">${featuresHTML}</ul>
+            <button class="visit-button" data-link="${project.link}" type="button" aria-label="Visit ${project.title} site">
+              <span class="btn-text">Visit Site</span>
+              <span class="loading-text">Loading<span class="loading-spinner"></span></span>
+              <i class="fas fa-arrow-up-right-from-square"></i>
+            </button>`;
+          projectContainer.appendChild(card);
+        });
+
+        projectContainer.querySelectorAll('.visit-button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.classList.contains('loading')) return;
+            btn.classList.add('loading');
+            btn.disabled = true;
+            loadingOverlay.classList.add('visible');
+            setTimeout(() => {
+              const url = btn.getAttribute('data-link');
+              if (url && url !== '#') {
+                window.open(url, '_blank', 'noopener');
+              }
+              setTimeout(() => {
+                loadingOverlay.classList.remove('visible');
+                btn.classList.remove('loading');
+                btn.disabled = false;
+              }, 600);
+            }, 1200);
+          });
+        });
+      }
+
+      searchInput.addEventListener('input', e => {
+        const query = e.target.value.toLowerCase();
+        const filtered = projects.filter(p => p.title.toLowerCase().includes(query));
+        displayProjects(filtered);
+      });
+
+      tsParticles.load("particle-canvas", {
+        fpsLimit: 60,
+        particles: {
+          number: { value: 60, density: { enable: true, value_area: 800 } },
+          color: { value: ["#00e1ff", "#e53eda", "#2dd4bf", "#ffffff"] },
+          shape: { type: "circle" },
+          opacity: { value: 0.4, random: true },
+          size: { value: 3, random: { enable: true, minimumValue: 1 } },
+          move: { enable: true, speed: 1.0, random: true, bounce: true, outModes: "bounce" },
+          links: { enable: false }
+        },
+        detectRetina: true,
+        background: { color: "transparent" }
+      });
+
+      if (audioPlayer && playPauseBtn && playIcon && pauseIcon) {
+        const tryPlay = () => {
+          audioPlayer.play().then(() => {
+            playIcon.style.display = "none";
+            pauseIcon.style.display = "block";
+          }).catch(() => {});
         };
-    </script>
+        document.body.addEventListener('click', tryPlay, { once: true });
+        document.body.addEventListener('keydown', tryPlay, { once: true });
+
+        playPauseBtn.addEventListener('click', () => {
+          if (audioPlayer.paused) {
+            audioPlayer.play();
+            playIcon.style.display = "none";
+            pauseIcon.style.display = "block";
+          } else {
+            audioPlayer.pause();
+            playIcon.style.display = "block";
+            pauseIcon.style.display = "none";
+          }
+        });
+
+        audioPlayer.addEventListener('ended', () => {
+          playIcon.style.display = "block";
+          pauseIcon.style.display = "none";
+        });
+      }
+
+      if (suggestionLink) {
+        suggestionLink.addEventListener('click', () => {
+          loadingOverlay.classList.add('visible');
+          setTimeout(() => {
+            window.open("msg/index.html", "_blank", "noopener");
+            setTimeout(() => {
+              loadingOverlay.classList.remove('visible');
+            }, 600);
+          }, 1000);
+        });
+      }
+
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.onkeydown = function(e) {
+        if(e.keyCode === 123) return false; // F12
+        if(e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) return false;
+        if(e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) return false;
+        if(e.ctrlKey && (e.key === 'U' || e.key === 'u')) return false;
+        if(e.ctrlKey && (e.key === 'S' || e.key === 's')) return false;
+        if(e.metaKey && e.key === 's') return false;
+        if(e.ctrlKey && e.altKey && e.key === 'Delete') return false;
+      };
+    });
+  </script>
 </body>
 </html>

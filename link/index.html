@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calyx Drey Links</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link
+    href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <style>
+    :root {
+      --wa-green: #075e54;
+      --wa-green-dark: #054739;
+      --wa-grey: #ece5dd;
+      --wa-bg: #222c31;
+      --wa-card: #1e2428;
+      --wa-fab: #25d366;
+      --wa-fab-hover: #128c7e;
+      --wa-blue: #4f8cff;
+      --danger: #ff495c;
+      --success: #39dc93;
+    }
+    body {
+      background: var(--wa-bg);
+      font-family: "Roboto", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background: var(--wa-green);
+      color: #fff;
+      padding: 1.2rem 2rem;
+      font-size: 2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      box-shadow: 0 2px 10px #0003;
+      letter-spacing: 2px;
+    }
+    .header-logo {
+      height: 36px;
+      width: 36px;
+      border-radius: 50%;
+      margin-right: 0.8em;
+      margin-left: 0.1em;
+      object-fit: cover;
+      background: #fff;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px #2222;
+      display: inline-block;
+    }
+    .navbar {
+      background: var(--wa-card);
+      padding: 0.5em 0;
+      display: flex;
+      justify-content: center;
+      gap: 1.6em;
+      box-shadow: 0 2px 10px #075e5444;
+    }
+    .nav-tab {
+      color: #ededed;
+      font-weight: 600;
+      font-size: 1.07em;
+      background: none;
+      border: none;
+      outline: none;
+      padding: 0.6em 1.7em;
+      border-radius: 1.2em 1.2em 0 0;
+      cursor: pointer;
+      transition: background 0.11s, color 0.16s;
+      margin-bottom: -3px;
+      display: flex;
+      align-items: center;
+      gap: 0.4em;
+      user-select: none;
+    }
+    .nav-tab.active {
+      background: var(--wa-grey);
+      color: var(--wa-green);
+      box-shadow: 0 -2px 14px #0e5e5439;
+      border-bottom: 2px solid var(--wa-green);
+    }
+    .main-content {
+      margin: 2rem auto;
+      max-width: 440px;
+      background: var(--wa-card);
+      border-radius: 1.2rem;
+      box-shadow: 0 6px 30px #075e541a;
+      padding: 2rem;
+      animation: pop-in 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    @keyframes pop-in {
+      0% {
+        transform: scale(0.8) translateY(50px);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+    .group-list-title {
+      color: #fff;
+      margin: 2rem 0 1rem 0;
+      font-weight: 500;
+      letter-spacing: 1px;
+      font-size: 1.08rem;
+      border-bottom: 1px solid #075e5444;
+      padding-bottom: 0.4rem;
+      user-select: none;
+    }
+    .group-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .group-item {
+      background: var(--wa-grey);
+      border-radius: 0.9rem;
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 2px 10px #075e5411;
+      animation: pop-in 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      position: relative;
+    }
+    .profile-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 1px 7px #075e5414;
+      border: 2px solid var(--wa-green);
+      background: #fff;
+      flex-shrink: 0;
+    }
+    .group-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .group-name {
+      font-weight: 600;
+      font-size: 1.08rem;
+      color: var(--wa-green-dark);
+      margin: 0;
+      user-select: text;
+    }
+    .group-link {
+      color: var(--wa-green);
+      font-size: 0.93rem;
+      overflow-wrap: anywhere;
+      text-decoration: underline;
+      transition: color 0.18s;
+      user-select: text;
+    }
+    .group-link:hover {
+      color: #0a8f6a;
+    }
+    .group-desc {
+      color: #555;
+      font-size: 0.92rem;
+      margin-top: 2px;
+      font-style: italic;
+      user-select: text;
+    }
+    .join-btn {
+      background: var(--wa-green);
+      color: #fff;
+      border: none;
+      border-radius: 0.7rem;
+      padding: 0.6rem 1rem;
+      font-size: 0.97rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.19s;
+      margin-left: 1rem;
+      outline: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .join-btn .fa-sign-in-alt {
+      font-size: 1.1em;
+    }
+    .join-btn:disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .join-btn:hover:not(:disabled) {
+      background: var(--wa-green-dark);
+    }
+    .counter-badge {
+      background: var(--wa-blue);
+      color: #fff;
+      font-size: 0.88rem;
+      border-radius: 1rem;
+      padding: 0.25em 0.8em;
+      margin-left: 0.6em;
+      margin-top: 0.2em;
+      font-weight: 600;
+      display: inline-block;
+      position: absolute;
+      top: 6px;
+      right: 12px;
+      box-shadow: 0 1px 4px #4f8cff32;
+      user-select: none;
+    }
+    @media (max-width: 520px) {
+      .main-content {
+        margin: 0.5rem;
+        padding: 1.1rem;
+      }
+      .header {
+        font-size: 1.25rem;
+        padding: 1rem 1.1rem;
+      }
+      .group-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.7rem;
+      }
+      .join-btn {
+        margin-left: 0;
+      }
+      .counter-badge {
+        right: 8px;
+        top: 8px;
+      }
+      .navbar {
+        gap: 0.5em;
+      }
+      .modal-nav-tab {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+    .fab {
+      position: fixed;
+      right: 32px;
+      bottom: 38px;
+      width: 60px;
+      height: 60px;
+      background: var(--wa-fab);
+      color: #fff;
+      border: none;
+      outline: none;
+      border-radius: 50%;
+      box-shadow: 0 4px 16px #0002;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      z-index: 100;
+      transition: background 0.18s, transform 0.15s;
+      user-select: none;
+    }
+    .fab.hidden {
+      display: none !important;
+    }
+    .fab:hover {
+      background: var(--wa-fab-hover);
+      transform: scale(1.08);
+    }
+    .wa-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(34, 44, 49, 0.75);
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fade-in-bg 0.21s;
+      overflow-y: auto;
+      user-select: none;
+    }
+    @keyframes fade-in-bg {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    .wa-modal-content {
+      background: var(--wa-card);
+      border-radius: 1.2rem;
+      box-shadow: 0 12px 60px #075e541f, 0 1px 6px #3332;
+      max-width: 370px;
+      width: 97vw;
+      padding: 2rem 1.3rem;
+      animation: pop-in 0.28s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .wa-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: transparent;
+      color: #ccc;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1;
+      padding: 0;
+      transition: color 0.18s;
+      user-select: none;
+    }
+    .wa-modal-close:hover {
+      color: #fff;
+    }
+    .form-title {
+      font-size: 1.22rem;
+      color: var(--wa-green);
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      letter-spacing: 1px;
+      width: 100%;
+      user-select: none;
+    }
+    .upload-img-center-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 1.3rem;
+      position: relative;
+      height: 120px;
+    }
+    .upload-img-label {
+      background: var(--wa-green);
+      color: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-size: 1.7rem;
+      box-shadow: 0 2px 12px #075e5440;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      transition: background 0.18s, transform 0.13s;
+      overflow: hidden;
+      user-select: none;
+    }
+    .upload-img-label:hover {
+      background: var(--wa-green-dark);
+      transform: scale(1.07) translateX(-50%);
+    }
+    #groupImg {
+      display: none;
+    }
+    .upload-img-label .fa-arrow-up-from-bracket {
+      font-size: 2.9rem;
+      color: #fff;
+      z-index: 1;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.18s;
+      user-select: none;
+    }
+    .img-preview {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #25d366;
+      background: #fff;
+      z-index: 2;
+      display: none;
+      transform: translate(-50%, -50%);
+      user-select: none;
+    }
+    .file-name {
+      color: #ece5dd;
+      font-size: 0.9em;
+      margin-top: 110px;
+      max-width: 140px;
+      overflow-x: auto;
+      white-space: nowrap;
+      display: block;
+      text-align: center;
+      user-select: text;
+    }
+
+    /* Nav buttons inside the modal for link type */
+    .modal-nav-group {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+    .modal-nav-tab {
+      color: #ededed;
+      font-weight: 600;
+      font-size: 1.05em;
+      background: none;
+      border: none;
+      outline: none;
+      padding: 0.6em 1.7em;
+      border-radius: 1.2em 1.2em 0 0;
+      cursor: pointer;
+      transition: background 0.11s, color 0.16s;
+      display: flex;
+      align-items: center;
+      gap: 0.4em;
+      user-select: none;
+    }
+    .modal-nav-tab.active {
+      background: var(--wa-grey);
+      color: var(--wa-green);
+      box-shadow: 0 -2px 14px #0e5e5439;
+      border-bottom: 2px solid var(--wa-green);
+    }
+
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      margin-top: 0;
+      user-select: none;
+    }
+    .upload-form input[type="text"],
+    .upload-form textarea {
+      padding: 0.9rem 1rem;
+      border-radius: 0.7rem;
+      border: none;
+      background: var(--wa-grey);
+      font-size: 1rem;
+      outline: none;
+      width: 100%;
+      box-sizing: border-box;
+      user-select: text;
+    }
+    .upload-form textarea {
+      min-height: 60px;
+      max-height: 120px;
+      resize: vertical;
+    }
+    .upload-form button[type="submit"] {
+      background: var(--wa-green);
+      color: white;
+      border: none;
+      border-radius: 0.7rem;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, transform 0.1s;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      user-select: none;
+    }
+    .upload-form button[type="submit"]:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+    .upload-form button[type="submit"]:hover:not(:disabled) {
+      background: var(--wa-green-dark);
+      transform: translateY(-1px);
+    }
+    /* Styled messages and inline errors without changes */
+    /* ... your other styles remain unchanged ... */
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img
+      class="header-logo"
+      src="https://res.cloudinary.com/dgy2dutjs/image/upload/v1752795317/url.crissvevo.co.tz/1000458506_vmvssg.png"
+      alt="Logo"
+    />
+    <span>Calyx Drey Links</span>
+  </div>
+  <nav class="navbar">
+    <button class="nav-tab active" id="tab-group">
+      <i class="fa fa-users"></i> Groups
+    </button>
+    <button class="nav-tab" id="tab-channel">
+      <i class="fa fa-bullhorn"></i> Channels
+    </button>
+  </nav>
+  <div class="main-content">
+    <div class="group-list-title" id="groupListTitle">Uploaded Groups</div>
+    <ul class="group-list" id="groupList"></ul>
+  </div>
+  <button
+    class="fab"
+    id="openFormBtn"
+    aria-label="Add Group/Channel"
+    ><i class="fa fa-plus"></i
+  ></button>
+
+  <!-- Styled message bar -->
+  <div id="msgBar" class="msg-bar"></div>
+
+  <!-- Modal -->
+  <div class="wa-modal" id="waModal" style="display:none;">
+    <div class="wa-modal-content">
+      <button class="wa-modal-close" id="closeFormBtn" aria-label="Close">
+        &times;
+      </button>
+      <div class="form-title" id="modalTitle">Upload WhatsApp Link</div>
+      <!-- Nav style buttons as link type selector -->
+      <div class="modal-nav-group">
+        <button
+          type="button"
+          class="nav-tab modal-nav-tab active"
+          data-type="group"
+          id="modal-tab-group"
+        >
+          <i class="fa fa-users"></i> WhatsApp Group
+        </button>
+        <button
+          type="button"
+          class="nav-tab modal-nav-tab"
+          data-type="channel"
+          id="modal-tab-channel"
+        >
+          <i class="fa fa-bullhorn"></i> WhatsApp Channel
+        </button>
+      </div>
+      <form class="upload-form" id="waForm" autocomplete="off">
+        <div class="upload-img-center-wrapper">
+          <label
+            class="upload-img-label"
+            id="uploadImgLabel"
+            title="Upload image"
+          >
+            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+            <input type="file" id="groupImg" accept="image/*" required />
+            <img src="" alt="Preview" id="imgPreview" class="img-preview" />
+          </label>
+          <span class="file-name" id="fileName"></span>
+        </div>
+
+        <input type="text" id="groupName" placeholder="Name" required />
+        <input type="text" id="groupLink" placeholder="Paste link..." required />
+        <div id="linkErrorMsg" style="display:none;margin-bottom:-1em;"></div>
+        <textarea id="groupDesc" placeholder="Link Description (optional)"></textarea>
+        <button type="submit" id="submitBtn">
+          <span>Add Link</span>
+          <i class="fa fa-check"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Config
+    const CLOUD_NAME = "dgy2dutjs";
+    const UPLOAD_PRESET = "url.crissvevo.co.tz";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBERQ3eUVKGr9azQD0DEomqr_5MY5fEGuU",
+      authDomain: "wall-drey-zw.firebaseapp.com",
+      projectId: "wall-drey-zw",
+      storageBucket: "wall-drey-zw.firebasestorage.app",
+      messagingSenderId: "862893308122",
+      appId: "1:862893308122:web:2c94edd2b28ca52771cde3",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const GROUPS_COLLECTION = "groups";
+
+    let curType = "group"; // current selected tab
+    let modalSelectedType = "group"; // current modal link type
+
+    // DOM
+    const fabBtn = document.getElementById("openFormBtn");
+    const modal = document.getElementById("waModal");
+    const closeBtn = document.getElementById("closeFormBtn");
+    const waForm = document.getElementById("waForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const modalTabs = document.querySelectorAll(".modal-nav-tab");
+    const modalTitle = document.getElementById("modalTitle");
+    const imgInput = document.getElementById("groupImg");
+    const imgPreview = document.getElementById("imgPreview");
+    const fileNameSpan = document.getElementById("fileName");
+    const uploadImgLabel = document.getElementById("uploadImgLabel");
+    const uploadIcon = uploadImgLabel.querySelector(".fa-arrow-up-from-bracket");
+
+    // Styling and behavior for outside tabs
+    function setActiveTab(type) {
+      curType = type;
+      document.getElementById("tab-group").classList.toggle("active", type === "group");
+      document.getElementById("tab-channel").classList.toggle("active", type === "channel");
+      document.getElementById("groupListTitle").textContent =
+        type === "group" ? "Uploaded Groups" : "Uploaded Channels";
+      renderVisibleGroups();
+    }
+    document.getElementById("tab-group").onclick = () => setActiveTab("group");
+    document.getElementById("tab-channel").onclick = () => setActiveTab("channel");
+
+    // Modal nav buttons logic
+    modalTabs.forEach((tab) => {
+      tab.onclick = () => {
+        modalTabs.forEach((t) => t.classList.toggle("active", t === tab));
+        modalSelectedType = tab.dataset.type;
+        modalTitle.textContent = `Upload WhatsApp ${modalSelectedType === "group" ? "Group" : "Channel"}`;
+        clearFieldErrors();
+      };
+    });
+
+    fabBtn.onclick = () => {
+      modal.style.display = "flex";
+      document.body.style.overflow = "hidden";
+      fabBtn.classList.add("hidden");
+      // Sync modal selected type with main tab type when opening
+      modalSelectedType = curType;
+      modalTabs.forEach((t) => t.classList.toggle("active", t.dataset.type === modalSelectedType));
+      modalTitle.textContent = `Upload WhatsApp ${modalSelectedType === "group" ? "Group" : "Channel"}`;
+      clearFieldErrors();
+    };
+
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+      resetUploadForm();
+      document.body.style.overflow = "";
+      fabBtn.classList.remove("hidden");
+    };
+
+    modal.onclick = (e) => {
+      if (e.target === modal) closeBtn.onclick();
+    };
+
+    // Image preview upload
+    imgInput.onchange = () => {
+      if (imgInput.files && imgInput.files[0]) {
+        fileNameSpan.textContent = imgInput.files[0].name;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          imgPreview.style.display = "block";
+          imgPreview.src = evt.target.result;
+          uploadIcon.style.opacity = "0.11";
+        };
+        reader.readAsDataURL(imgInput.files[0]);
+      } else {
+        fileNameSpan.textContent = "";
+        imgPreview.style.display = "none";
+        imgPreview.src = "";
+        uploadIcon.style.opacity = "1";
+      }
+    };
+
+    function resetUploadForm() {
+      waForm.reset();
+      fileNameSpan.textContent = "";
+      imgPreview.style.display = "none";
+      imgPreview.src = "";
+      submitBtn.disabled = false;
+      uploadIcon.style.opacity = "1";
+      clearFieldErrors();
+    }
+
+    function inlineError(msg) {
+      return `<span class="input-error"><i class="fa fa-exclamation-circle"></i> ${msg}</span>`;
+    }
+    function clearFieldErrors() {
+      document.getElementById("linkErrorMsg").innerHTML = "";
+      document.getElementById("linkErrorMsg").style.display = "none";
+    }
+
+    // Upload to Cloudinary
+    async function uploadFile(file) {
+      const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", UPLOAD_PRESET);
+      let resp = await fetch(url, { method: "POST", body: data });
+      if (!resp.ok) throw new Error("Unable to upload image to Cloudinary");
+      let result = await resp.json();
+      return result.secure_url;
+    }
+
+    // Group data storage
+    let allGroups = [];
+
+    // Render visible groups/channels filtered by curType
+    function renderVisibleGroups() {
+      const groupList = document.getElementById("groupList");
+      groupList.innerHTML = "";
+      let curGroups = allGroups.filter((g) => (g.type || "group") === curType);
+      if (curGroups.length === 0) {
+        groupList.innerHTML = `<li style='color:#888;background:none;box-shadow:none;'>No ${curType === "group" ? "groups" : "channels"} yet.</li>`;
+        return;
+      }
+      curGroups.forEach((g) => {
+        groupList.insertAdjacentHTML(
+          "beforeend",
+          createGroupItemHTML(g.id, g.name, g.link, g.desc, g.imageUrl, g.views || 0, g.type)
+        );
+        bindJoinBtn(g.id, g.link);
+      });
+    }
+
+    // Renders the group/channel item WITHOUT the group-type-label
+    function createGroupItemHTML(id, name, url, desc, imgSrc, viewCount, type) {
+      return `
+        <li class="group-item" data-group-id="${id}">
+          <img class="profile-img" src="${imgSrc}" alt="Profile"/>
+          <div class="group-info">
+            <div class="group-name">${name}</div>
+            <a class="group-link" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>
+            ${desc ? `<div class="group-desc"><i class="fa fa-info-circle"></i> ${desc}</div>` : ''}
+          </div>
+          <button class="join-btn" data-group-id="${id}">
+            <i class="fa fa-sign-in-alt"></i> Join ${type === "channel" ? "Channel" : "Group"}
+          </button>
+          <span class="counter-badge" id="counter-${id}">Views: ${viewCount ?? 0}</span>
+        </li>
+      `;
+    }
+
+    // Real-time Firestore update listener
+    db.collection(GROUPS_COLLECTION)
+      .orderBy("createdAt", "desc")
+      .onSnapshot((snap) => {
+        allGroups = [];
+        snap.forEach((doc) => {
+          let d = doc.data();
+          allGroups.push({
+            id: doc.id,
+            name: d.name,
+            link: d.link,
+            desc: d.desc || "",
+            imageUrl: d.imageUrl,
+            views: d.views || 0,
+            type: d.type || "group",
+          });
+        });
+        renderVisibleGroups();
+      });
+
+    // Form submit and validate
+    waForm.onsubmit = async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      clearFieldErrors();
+
+      const groupName = document.getElementById("groupName").value.trim();
+      const groupLink = document.getElementById("groupLink").value.trim();
+      const groupDesc = document.getElementById("groupDesc").value.trim();
+      const linkType = modalSelectedType;
+
+      let errors = [];
+
+      // Validate link pattern
+      if (linkType === "group") {
+        if (!groupLink.startsWith("https://chat.whatsapp.com/")) {
+          errors.push("Must be a group link (starts with https://chat.whatsapp.com/)");
+        }
+      } else if (linkType === "channel") {
+        if (!groupLink.startsWith("https://whatsapp.com/channel/")) {
+          errors.push("Must be a channel link (starts with https://whatsapp.com/channel/)");
+        }
+      }
+
+      if (!imgInput.files || !imgInput.files[0]) errors.push("Please upload a profile image.");
+      if (!groupName) errors.push("Name is required.");
+      if (!groupLink) errors.push("Link is required.");
+
+      if (errors.length) {
+        document.getElementById("linkErrorMsg").innerHTML = inlineError(errors.join("<br>"));
+        document.getElementById("linkErrorMsg").style.display = "block";
+        submitBtn.disabled = false;
+        return;
+      }
+
+      submitBtn.innerHTML = `<i class="fa fa-spinner fa-spin"></i> Uploading...`;
+
+      try {
+        const imgFile = imgInput.files[0];
+        const imgURL = await uploadFile(imgFile);
+
+        await db.collection(GROUPS_COLLECTION).add({
+          name: groupName,
+          link: groupLink,
+          desc: groupDesc,
+          imageUrl: imgURL,
+          views: 0,
+          type: linkType,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
+        showMsgBar("Link added successfully!", "success");
+
+        resetUploadForm();
+
+        submitBtn.innerHTML = `<span>Add Link</span><i class="fa fa-check"></i>`;
+        submitBtn.disabled = false;
+        modal.style.display = "none";
+        document.body.style.overflow = "";
+        fabBtn.classList.remove("hidden");
+      } catch {
+        showMsgBar("Unable to upload or save. Please try again.", "error");
+        submitBtn.innerHTML = `<span>Add Link</span><i class="fa fa-check"></i>`;
+        submitBtn.disabled = false;
+      }
+    };
+
+    // Increment views on join
+    function bindJoinBtn(groupId, link) {
+      const btn = document.querySelector(`.join-btn[data-group-id="${groupId}"]`);
+      const counter = document.getElementById(`counter-${groupId}`);
+      if (btn && counter) {
+        btn.onclick = async () => {
+          if (!btn.dataset.clicked) {
+            btn.dataset.clicked = "1";
+            await db.collection(GROUPS_COLLECTION).doc(groupId).update({
+              views: firebase.firestore.FieldValue.increment(1),
+            });
+          }
+          window.open(link, "_blank");
+        };
+      }
+    }
+
+    // Message bar helper
+    function showMsgBar(msg, type = "error", timeout = 3500) {
+      const msgBar = document.getElementById("msgBar");
+      msgBar.className = `msg-bar ${type} active`;
+      msgBar.innerHTML =
+        type === "success"
+          ? `<i class="fa fa-check-circle"></i> ${msg}`
+          : `<i class="fa fa-exclamation-triangle"></i> ${msg}`;
+      setTimeout(() => (msgBar.className = `msg-bar ${type}`), timeout);
+    }
+  </script>
+</body>
+</html>
